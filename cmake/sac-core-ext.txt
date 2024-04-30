@@ -48,7 +48,7 @@ structures/ComplexScalarArith.sac          Ext
 structures/ComplexBasics.sac               Ext
 structures/Complex.sac                     Ext
 structures/Quaternion.sac                  Ext
-structures/Vec3d.sac                       Ext
+structures/Vector3.sac                     Ext
 structures/Char.sac                        Core
 structures/Bits.sac                        Core
 structures/String.sac                      Core
