@@ -1,6 +1,6 @@
 module ArrayBasics;
 
-use ScalarArith: {zero};
+use ScalarArith: all;
 export all;
 
 #include "Templates.mac"
@@ -59,7 +59,50 @@ typ[*] reshape( int[.] shp, typ[*] A)        \
   return( _reshape_VxA_( shp, A));           \
 }
 
+#define RESHAPE__BOO(typ, postfix, zval, oval)  \
+inline                                          \
+int _iv2offset_(int[n] iv, int[n] shp) {        \
+  off = 0;                                      \
+  mult = 1;                                     \
+  dim = n-1;                                    \
+  do {                                          \
+    off = off + (_sel_VxA_([dim],iv) * mult);   \
+    mult = mult * _sel_VxA_([dim],shp);         \
+    dim--;                                      \
+  } while (dim >= 0);                           \
+  return off;                                   \
+}                                               \
+inline                                          \
+int[m] _offset2iv_(int off, int[m] shp) {       \
+  dim = m-1;                                    \
+  c_shp = _sel_VxA_([dim],shp);                 \
+  do {                                          \
+    shp = _modarray_AxVxS_(                     \
+      shp, [dim], off % c_shp);                 \
+    off = off / c_shp;                          \
+    dim--;                                      \
+  } while(dim >= 0);                            \
+  return shp;                                   \
+}                                               \
+inline                                          \
+typ[*] reshape( int[.] shp, typ[*] A)           \
+{                                               \
+  from_shp = _shape_A_(A);                      \
+  res = with {(. <= iv <= .) : _sel_VxA_(       \
+    _offset2iv_(                                \
+      _iv2offset_(iv, shp),                     \
+      from_shp),                                \
+    A);} : genarray(shp,false);                 \
+  return res;                                   \
+}
+
+#if 1 /*Needed for Packed Booleans*/
+NUM( RESHAPE)
+CHAR( RESHAPE)
+BOOL( RESHAPE__BOO)
+#else
 BUILT_IN( RESHAPE)
+#endif
 
 #ifdef RBE
 /** <!--********************************************************************-->

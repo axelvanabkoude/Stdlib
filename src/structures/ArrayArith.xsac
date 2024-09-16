@@ -110,6 +110,27 @@ int[.] (name)( int[.] A, int    B)                 \
   return( res);                                    \
 }
 
+#define MAP_BIN_BOO_AxA( name, op, a, b)                 \
+inline                                                   \
+b[n:shp, m] name( a[n1:shp1, m1] A, a[n2:shp2, m2] B)    \
+{                                                        \
+  return({iv -> _##op##_VxV_(A[iv], B[iv]) | iv < shp1});\
+}
+
+#define MAP_BIN_BOO_SxA( name, op, a, b)                 \
+inline                                                   \
+b[n:shp, m] name( a A, a[n1:shp1, m1] B)                 \
+{                                                        \
+  return( {iv -> _##op##_SxV_(A, B[iv]) | iv < shp1});   \
+}
+
+#define MAP_BIN_BOO_AxS( name, op, a, b)                 \
+inline                                                   \
+b[n:shp, m] name( a[n1:shp1, m1] A, a B)                 \
+{                                                        \
+  return({iv -> _##op##_VxS_(A[iv], B) | iv < shp1});    \
+}
+
 /********************************************************************************
  *
  * Array-Extensions for monadic ops
@@ -130,6 +151,15 @@ b[+] name( a[+] A)                                       \
 #define MAP_MON_SxA( name, op, a, b)
 #define MAP_MON_AxS( name, op, a, b)
 
+#define MAP_MON_BOO_AxA( name, op, a, b)                   \
+inline                                                     \
+b[n:shp, m] name( a[n1:shp1, m1] A)                        \
+{                                                          \
+  return( {iv -> _##op##_V_(A[iv]) | iv < shp1});          \
+}
+
+#define MAP_MON_BOO_SxA( name, op, a, b)
+#define MAP_MON_BOO_AxS( name, op, a, b)
 
 
 
