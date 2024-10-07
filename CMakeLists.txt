@@ -15,6 +15,7 @@ SET (IS_RELEASE         FALSE       CACHE BOOL "Indicate if we are building with
 OPTION (FULLTYPES "Include types such as long and longlong" OFF)
 OPTION (BUILD_EXT "Build complete Stdlib with extra modules" ON)
 OPTION (BUILDGENERIC "Do not use architecture specific optimisations (useful for package builds)" OFF)
+OPTION (PB_PADDED "Utilise elementwise reshape function, used to reorganise padding while calling reshape." OFF)
 
 SET (SAC2C_EXTRA_INC
      -DHAVE_CONFIG_H
@@ -34,6 +35,11 @@ ENDIF ()
 IF (BUILD_EXT)
     LIST (APPEND SAC2C_EXTRA_INC -DEXT_STDLIB)
     LIST (APPEND SAC2C_CPP_INC -DEXT_STDLIB)
+ENDIF ()
+
+IF (PB_PADDED)
+    LIST (APPEND SAC2C_EXTRA_INC -D_PB_PADDED)
+    LIST (APPEND SAC2C_CPP_INC -D_PB_PADDED)
 ENDIF ()
 
 # Check whether sac2c is operational

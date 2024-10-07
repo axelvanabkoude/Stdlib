@@ -96,7 +96,7 @@ typ[*] reshape( int[.] shp, typ[*] A)           \
   return res;                                   \
 }
 
-#if 1 /*Needed for Packed Booleans*/
+#ifdef _PB_PADDED /*Needed for Packed Booleans*/
 NUM( RESHAPE)
 CHAR( RESHAPE)
 BOOL( RESHAPE__BOO)

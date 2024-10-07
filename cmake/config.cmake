@@ -103,6 +103,7 @@ MESSAGE ("
  * - full types:           ${FULLTYPES}
  * - build generic         ${BUILDGENERIC}
  * - build extended:       ${BUILD_EXT}
+ * - build padded PBs      ${PB_PADDED}
  *
  * Packaging state:
  * - is release:           ${IS_RELEASE}
